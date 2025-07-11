@@ -10,7 +10,6 @@ using PowerFlows
 using PowerNetworkMatrices
 using HiGHS
 using DataFrames
-using DataStructures
 using Dates
 using TimeSeries
 using HiGHS
