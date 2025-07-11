@@ -25,7 +25,6 @@ function add_dlr_to_system_branches!(
     for branch_name in branches_dlr
         branch = get_component(ACTransmission, sys, branch_name)
 
-        dlr_data = SortedDict{Dates.DateTime, TimeSeries.TimeArray}()
         data_ts = collect(
             DateTime("$initial_date 0:00:00", "y-m-d H:M:S"):Hour(1):(
                 DateTime("$initial_date 23:00:00", "y-m-d H:M:S") + Day(n_steps-1)
