@@ -170,7 +170,7 @@ DA_sequence = SimulationSequence(
 
 
 current_date = string( today() )
-steps_sim = 7
+steps_sim = 3
 sim = Simulation(
     name = current_date * "_RTS_DA" * "_" * string(steps_sim) * "steps",
     steps = steps_sim,
