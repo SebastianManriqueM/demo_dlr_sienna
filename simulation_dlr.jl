@@ -30,9 +30,7 @@ function add_dlr_to_system_branches!(
                 DateTime("$initial_date 23:00:00", "y-m-d H:M:S") + Day(n_steps-1)
             )
         )
-        @show branch_name
-        @show length(dlr_factors)
-        @show length(data_ts)
+        
         dlr_data =
                 TimeArray(
                     data_ts,
