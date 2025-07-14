@@ -47,25 +47,6 @@ function add_dlr_to_system_branches!(
                 scaling_factor_multiplier = get_rating,
             ),
         )
-        # for t in 1:look_ahead
-        #     @show t
-        #     ini_time = data_ts[1] + Day(t - 1)
-        #     dlr_data[ini_time] =
-        #         TimeArray(
-        #             data_ts + Day(t - 1),
-        #             get_rating(branch) * get_base_power(sys) * dlr_factors,
-        #         )
-        # end
-
-        # PowerSystems.add_time_series!(
-        #     sys,
-        #     branch,
-        #     PowerSystems.Deterministic(
-        #         "dynamic_line_ratings",
-        #         dlr_data;
-        #         scaling_factor_multiplier = get_rating,
-        #     ),
-        # )
     end
 end
 
