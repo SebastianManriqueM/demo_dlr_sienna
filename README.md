@@ -1,5 +1,7 @@
 # demo_dlr_sienna
-This is a demo to demonstrate new sienna capabilities with Dynamic Line Ratings (DLR)
+This is a demo to demonstrate new sienna capabilities with:
+- Dynamic Line Ratings (DLR).
+- Security-Constrained Unit commitment (SCUC) (N-1, G-1, and G-1 with reserves deliverability constraints)
 
 ## Required Packages
 
