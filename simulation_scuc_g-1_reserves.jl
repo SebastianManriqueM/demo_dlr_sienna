@@ -1,6 +1,7 @@
 using Pkg
-Pkg.activate("demo_dlr_sienna")
-#Pkg.instantiate()
+#Pkg.activate("demo_dlr_sienna")
+Pkg.activate("enviroment_branches")
+Pkg.instantiate()
 using PowerSystems
 const PSY = PowerSystems
 using PowerSimulations
@@ -14,7 +15,7 @@ using PowerNetworkMatrices
 using Dates
 using TimeSeries
 using Logging
-
+#using Revise
 using HiGHS
 #using Xpress
 
@@ -51,11 +52,7 @@ template = ProblemTemplate(
     ),
 )
 
-set_device_model!(
-    template,
-    ThermalStandard,
-    ThermalStandardUnitCommitment,
-)
+set_device_model!(template, ThermalStandard, ThermalStandardUnitCommitment)
 set_device_model!(template, PowerLoad, StaticPowerLoad)
 set_device_model!(template, DeviceModel(Line, StaticBranch;
     use_slacks = false)) #
