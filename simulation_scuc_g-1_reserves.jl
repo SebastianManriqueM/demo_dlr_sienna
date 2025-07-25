@@ -1,7 +1,8 @@
 using Pkg
 #Pkg.activate("demo_dlr_sienna")
-Pkg.activate("enviroment_branches")
+Pkg.activate("demo_dlr")
 Pkg.instantiate()
+#using Revise
 using PowerSystems
 const PSY = PowerSystems
 using PowerSimulations
@@ -10,26 +11,20 @@ using InfrastructureSystems
 const IS = InfrastructureSystems
 
 using PowerSystemCaseBuilder
-#using HydroPowerSimulations
 using PowerNetworkMatrices
 using Dates
 using TimeSeries
 using Logging
-#using Revise
 using HiGHS
-#using Xpress
 
 mip_gap = 0.01
 optimizer = optimizer_with_attributes(
     HiGHS.Optimizer,
     "parallel" => "on",
     "mip_rel_gap" => mip_gap)
-# optimizer = optimizer_with_attributes(
-#     Xpress.Optimizer,
-#     "MIPRELSTOP" => mip_gap)
+
 
 sys = build_system(PSITestSystems, "c_sys5_uc", add_reserves = true)
-#transform_single_time_series!(sys, Hour(48), Day(1))#
 
 components_outages_names = ["Alta"]
 for component_name in components_outages_names
@@ -48,7 +43,6 @@ template = ProblemTemplate(
         PTDFPowerModel; #SecurityConstrainedPTDFPowerModel;  #PTDFPowerModel;
         use_slacks = false,
         PTDF_matrix = PTDF(sys),
-        LODF_matrix = LODF(sys),
     ),
 )
 
@@ -107,8 +101,9 @@ sim = Simulation(;
     simulation_folder = tempdir(),#".",   tempdir()
 )
 
-build!(sim; console_level = Logging.Debug)
 
+build!(sim; console_level = Logging.Debug)
+ 
 execute!(sim)
 
 results = SimulationResults(sim)
