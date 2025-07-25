@@ -859,7 +859,7 @@ version = "0.13.0"
 
 [[deps.PowerSimulations]]
 deps = ["CSV", "DataFrames", "DataStructures", "Dates", "Distributed", "Distributions", "DocStringExtensions", "HDF5", "InfrastructureSystems", "InteractiveUtils", "JSON3", "JuMP", "LinearAlgebra", "Logging", "MathOptInterface", "PowerFlows", "PowerModels", "PowerNetworkMatrices", "PowerSystems", "PrettyTables", "ProgressMeter", "Random", "Serialization", "TimeSeries", "TimerOutputs"]
-git-tree-sha1 = "0a21dd85262358b469034d4605e1deb91fbc6465"
+git-tree-sha1 = "3f0f2ba05df8c5d8e0538fc8f7a818ab58adaa8c"
 repo-rev = "jd/transmissions_sc_ptdf"
 repo-url = "https://github.com/NREL-Sienna/PowerSimulations.jl.git"
 uuid = "e690365d-45e2-57bb-ac84-44ba829e73c4"
