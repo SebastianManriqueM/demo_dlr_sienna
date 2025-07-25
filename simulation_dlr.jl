@@ -1,5 +1,6 @@
 using Pkg
 Pkg.activate("demo_dlr_sienna")
+using Revise
 using Logging
 using InfrastructureSystems
 using PowerSystems
@@ -67,7 +68,7 @@ initial_date = "2020-01-01" #initial date of the simulation
 dlr_factors_daily = vcat([fill(x, 6) for x in [1.15, 1.05, 1.1, 1]]...)
 dlr_factor_ts_horizon = repeat(dlr_factors_daily, steps_ts_horizon)
 
-branches_dlr_v = ["A2", "A5", "A24", "B8", "B10","B18", "CA-1", "C22", "C34",
+branches_dlr_v = ["A2", "A5", "A24", "B10","B18", "CA-1", "C22", "C34",
                     "A7", "A17", "B14", "B15", "C7", "C17"] # Example branch names, replace with actual branch names that you want to include DLR
 add_dlr_to_system_branches!(
     sys,
@@ -83,6 +84,7 @@ template_uc =
         NetworkModel(PTDFPowerModel;
         reduce_radial_branches = false,
         use_slacks = false,
+        PTDF_matrix = PTDF(sys),
         ),
     )
 
@@ -106,6 +108,8 @@ TapTransf_device_model = DeviceModel(
         DynamicBranchRatingTimeSeriesParameter => "dynamic_line_ratings",
     ))
 
+set_device_model!(template_uc, line_device_model)
+set_device_model!(template_uc, TapTransf_device_model)
 set_device_model!(template_uc, DeviceModel(TwoTerminalGenericHVDCLine,
                                     HVDCTwoTerminalLossless))
 
