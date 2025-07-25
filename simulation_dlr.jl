@@ -57,9 +57,8 @@ optimizer = optimizer_with_attributes(
                 #"parallel" => "on",
                 "mip_rel_gap" => mip_gap)
 
-sys_name = "modified_RTS_GMLC_DA_sys" #modified_RTS_GMLC_DA_sys, c_sys14
-kind_system = PSISystems #PSISystems, PSITestSystems
-
+sys_name = "modified_RTS_GMLC_DA_sys" 
+kind_system = PSISystems 
 
 sys = build_system(kind_system, sys_name)
 
@@ -119,10 +118,6 @@ set_service_model!(
     ServiceModel(VariableReserve{ReserveDown}, RangeReserve, use_slacks = false)
 )
 
-
-
-
-
 model = DecisionModel(
     template_uc,
     sys;
@@ -149,7 +144,7 @@ DA_sequence = SimulationSequence(
 
 
 current_date = string( today() )
-steps_sim = 3
+steps_sim = 2
 sim = Simulation(
     name = current_date * "_RTS_DA" * "_" * string(steps_sim) * "steps",
     steps = steps_sim,
@@ -164,3 +159,12 @@ execute!(sim)
 
 results = SimulationResults(sim)
 uc      = get_decision_problem_results(results, "UC")
+
+therm_df = read_realized_variable(uc, "ActivePowerVariable__ThermalStandard")
+Pline_df = read_realized_variable(uc, "FlowActivePowerVariable__Line")
+
+
+vars = model.internal.container.variables
+keys_var = collect(keys(vars))
+constr = model.internal.container.constraints
+keys_constr = collect(keys(constr))
