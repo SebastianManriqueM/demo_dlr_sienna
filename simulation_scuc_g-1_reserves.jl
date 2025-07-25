@@ -1,6 +1,6 @@
 using Pkg
 #Pkg.activate("demo_dlr_sienna")
-Pkg.activate("demo_dlr")
+Pkg.activate("demo_dlr_sienna")
 Pkg.instantiate()
 #using Revise
 using PowerSystems
@@ -26,12 +26,12 @@ optimizer = optimizer_with_attributes(
 
 sys = build_system(PSITestSystems, "c_sys5_uc", add_reserves = true)
 
-components_outages_names = ["Alta"]
+components_outages_names = ["Alta"] #Add Here the names of the generators to be considered for outages in the G-1 formulation
 for component_name in components_outages_names
     # --- Create Outage Data ---
     transition_data = GeometricDistributionForcedOutage(;
-        mean_time_to_recovery = 10,  # Units of hours
-        outage_transition_probability = 0.9999,  # Probability for outage per hour
+        mean_time_to_recovery = 10,  # Units of hours - This value does not have any influence for G-1 formulation
+        outage_transition_probability = 0.9999,  # Probability for outage per hour - This value does not have any influence for G-1 formulation
     )
     component = get_component(ThermalStandard, sys, component_name) #Brighton (Infeasible), Solitude (infinite Iteration),  Park City, Alta, Sundance
     add_supplemental_attribute!(sys, component, transition_data)
@@ -54,14 +54,14 @@ set_device_model!(template, DeviceModel(Line, StaticBranch;
 set_service_model!(template,
     ServiceModel(
         VariableReserve{ReserveUp},
-        RangeReserve,
+        RangeReserveWithDeliverabilityConstraints,
         "Reserve1",
     ))
 
 set_service_model!(template,
     ServiceModel(
         VariableReserve{ReserveDown},
-        RangeReserve,#WithDeliverabilityConstraints
+        RangeReserveWithDeliverabilityConstraints,
         "Reserve2",
     ))
 
