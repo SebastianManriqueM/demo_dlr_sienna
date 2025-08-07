@@ -61,6 +61,8 @@ optimizer = optimizer_with_attributes(
 sys_name = "modified_RTS_GMLC_DA_sys" 
 kind_system = PSISystems 
 
+#Uncoment the following line if you want to skip PowerSystemCaseBuilder setup and just load the system_to_file (and comment "sys = build_system(kind_system, sys_name)")
+#sys = system("modified_RTS_GMLC_DA_sys.json")
 sys = build_system(kind_system, sys_name)
 
 steps_ts_horizon= 366 #days to run

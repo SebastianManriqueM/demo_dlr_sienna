@@ -23,7 +23,8 @@ optimizer = optimizer_with_attributes(
     "parallel" => "on",
     "mip_rel_gap" => mip_gap)
 
-
+#Uncoment the following line if you want to skip PowerSystemCaseBuilder setup and just load the system_to_file (and comment "sys = build_system()")
+#sys = system("c_sys5_uc.json")
 sys = build_system(PSITestSystems, "c_sys5_uc", add_reserves = true)
 
 components_outages_names = ["Alta"] #Add Here the names of the generators to be considered for outages in the G-1 formulation
