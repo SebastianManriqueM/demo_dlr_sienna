@@ -459,7 +459,7 @@ version = "0.7.8"
 
 [[deps.InfrastructureSystems]]
 deps = ["CSV", "DataFrames", "DataStructures", "Dates", "DocStringExtensions", "H5Zblosc", "HDF5", "InteractiveUtils", "JSON3", "Logging", "Mustache", "Pkg", "PrettyTables", "Printf", "Random", "SHA", "SQLite", "Serialization", "StringTemplates", "StructTypes", "TOML", "Tables", "TerminalLoggers", "TimeSeries", "TimerOutputs", "UUIDs", "YAML"]
-git-tree-sha1 = "3c2f60f5394e6516165c56bba6316380d731b6a2"
+git-tree-sha1 = "17a802d32b7e80fbabce753069240a17d1317345"
 repo-rev = "main"
 repo-url = "https://github.com/NREL-Sienna/InfrastructureSystems.jl.git"
 uuid = "2cd47ed4-ca9b-11e9-27f2-ab636a7671f1"
@@ -851,16 +851,16 @@ version = "0.21.4"
 
 [[deps.PowerNetworkMatrices]]
 deps = ["AppleAccelerate", "DocStringExtensions", "HDF5", "InfrastructureSystems", "JSON3", "KLU", "LinearAlgebra", "MKL", "Pardiso", "PowerSystems", "SparseArrays"]
-git-tree-sha1 = "3ced090d4efec97a741f522b8e5c915c8107ea99"
-repo-rev = "mb/get-retained-branches"
+git-tree-sha1 = "1d27e3dd8855b3e0077c540e46618c8626fbac0e"
+repo-rev = "mb/other-fixes-for-psi"
 repo-url = "https://github.com/NREL-Sienna/PowerNetworkMatrices.jl.git"
 uuid = "bed98974-b02a-5e2f-9fe0-a103f5c450dd"
 version = "0.13.0"
 
 [[deps.PowerSimulations]]
 deps = ["CSV", "DataFrames", "DataStructures", "Dates", "Distributed", "Distributions", "DocStringExtensions", "HDF5", "InfrastructureSystems", "InteractiveUtils", "JSON3", "JuMP", "LinearAlgebra", "Logging", "MathOptInterface", "PowerFlows", "PowerModels", "PowerNetworkMatrices", "PowerSystems", "PrettyTables", "ProgressMeter", "Random", "Serialization", "TimeSeries", "TimerOutputs"]
-git-tree-sha1 = "3f0f2ba05df8c5d8e0538fc8f7a818ab58adaa8c"
-repo-rev = "jd/transmissions_sc_ptdf"
+git-tree-sha1 = "0a4d5d80cdd2cd697d4f8cd910d3b451c3d619bb"
+repo-rev = "sm/scuc_implementations"
 repo-url = "https://github.com/NREL-Sienna/PowerSimulations.jl.git"
 uuid = "e690365d-45e2-57bb-ac84-44ba829e73c4"
 version = "0.30.1"
@@ -873,7 +873,7 @@ version = "1.3.11"
 
 [[deps.PowerSystems]]
 deps = ["CSV", "DataFrames", "DataStructures", "Dates", "DocStringExtensions", "InfrastructureSystems", "InteractiveUtils", "JSON3", "LinearAlgebra", "Logging", "PowerFlowData", "PrettyTables", "TimeSeries", "UUIDs", "Unicode", "YAML"]
-git-tree-sha1 = "e9ed056a5543fa821ff4848bfde49416f1e0f70c"
+git-tree-sha1 = "d0e9ce0fed6c559c90121e176cd95359132cc89d"
 repo-rev = "psy5"
 repo-url = "https://github.com/NREL-Sienna/PowerSystems.jl.git"
 uuid = "bcd98974-b02a-5e2f-9ee0-a103f5c450dd"
