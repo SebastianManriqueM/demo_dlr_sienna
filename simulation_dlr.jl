@@ -1,6 +1,6 @@
 using Pkg
 Pkg.activate("demo_dlr_sienna")
-using Revise
+Pkg.instantiate()
 using Logging
 using InfrastructureSystems
 using PowerSystems
@@ -10,10 +10,10 @@ using HydroPowerSimulations
 using PowerFlows
 using PowerNetworkMatrices
 using HiGHS
+using Xpress
 using DataFrames
 using Dates
 using TimeSeries
-using HiGHS
 
 function add_dlr_to_system_branches!(
     sys::System, 
@@ -54,16 +54,10 @@ end
 
 mip_gap = 0.01
 optimizer = optimizer_with_attributes(
-                HiGHS.Optimizer,
-                #"parallel" => "on",
-                "mip_rel_gap" => mip_gap)
+    Xpress.Optimizer,
+    "MIPRELSTOP" => mip_gap)
 
-sys_name = "modified_RTS_GMLC_DA_sys" 
-kind_system = PSISystems 
-
-#Uncoment the following line if you want to skip PowerSystemCaseBuilder setup and just load the system_to_file (and comment "sys = build_system(kind_system, sys_name)")
-#sys = system("modified_RTS_GMLC_DA_sys.json")
-sys = build_system(kind_system, sys_name)
+sys = build_system(PSISystems, "modified_RTS_GMLC_DA_sys")
 
 steps_ts_horizon= 366 #days to run
 initial_date = "2020-01-01" #initial date of the simulation
@@ -96,19 +90,20 @@ set_device_model!(template_uc, RenewableNonDispatch, FixedOutput)
 set_device_model!(template_uc, PowerLoad, StaticPowerLoad)
 set_device_model!(template_uc, HydroDispatch, HydroDispatchRunOfRiver)
 
-
 line_device_model = DeviceModel(
     Line,
     StaticBranch;
-    time_series_names = Dict(
-        DynamicBranchRatingTimeSeriesParameter => "dynamic_line_ratings",
-    ))
+    # time_series_names = Dict(
+    #     DynamicBranchRatingTimeSeriesParameter => "dynamic_line_ratings",
+    # )
+    )
 TapTransf_device_model = DeviceModel(
     TapTransformer,
     StaticBranch;
-    time_series_names = Dict(
-        DynamicBranchRatingTimeSeriesParameter => "dynamic_line_ratings",
-    ))
+    # time_series_names = Dict(
+    #     DynamicBranchRatingTimeSeriesParameter => "dynamic_line_ratings",
+    # )
+    )
 
 set_device_model!(template_uc, line_device_model)
 set_device_model!(template_uc, TapTransf_device_model)
@@ -166,9 +161,12 @@ execute!(sim)
 results = SimulationResults(sim)
 uc      = get_decision_problem_results(results, "UC")
 
-therm_df = read_realized_variable(uc, "ActivePowerVariable__ThermalStandard")
-Pline_df = read_realized_variable(uc, "FlowActivePowerVariable__Line")
+therm_df = read_realized_variable(uc, "ActivePowerVariable__ThermalStandard", table_format = TableFormat.WIDE)
+Pline_df = read_realized_expression(uc, "PTDFBranchFlow__Line", table_format = TableFormat.WIDE)
+PTrafo_df = read_realized_expression(uc, "PTDFBranchFlow__TapTransformer", table_format = TableFormat.WIDE)
 
+Pline_dlr_df = Pline_df[:, ["A2", "A5", "A24", "B10","B18", "CA-1", "C22", "C34"]]
+PTrafo_dlr_df = PTrafo_df[:, ["A7", "A17"]]
 
 vars = model.internal.container.variables
 keys_var = collect(keys(vars))
