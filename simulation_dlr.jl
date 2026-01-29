@@ -22,7 +22,6 @@ function add_dlr_to_system_branches!(
     dlr_factors::Vector{Float64};
     initial_date::String = "2020-01-01",
     )
-    # Add dynamic line ratings to the system
     for branch_name in branches_dlr
         branch = get_component(ACTransmission, sys, branch_name)
 
@@ -32,12 +31,7 @@ function add_dlr_to_system_branches!(
             )
         )
         
-        dlr_data =
-                TimeArray(
-                    data_ts,
-                    get_rating(branch) * get_base_power(sys) * dlr_factors,
-                )
-
+        dlr_data = TimeArray(data_ts, dlr_factors)
 
         PowerSystems.add_time_series!(
             sys,
@@ -61,10 +55,10 @@ sys = build_system(PSISystems, "modified_RTS_GMLC_DA_sys")
 
 steps_ts_horizon= 366 #days to run
 initial_date = "2020-01-01" #initial date of the simulation
-dlr_factors_daily = vcat([fill(x, 6) for x in [1.15, 1.05, 1.1, 1]]...)
+dlr_factors_daily = vcat([fill(x, 6) for x in [1.15, 1.05, 0.95, 0.95]]...)
 dlr_factor_ts_horizon = repeat(dlr_factors_daily, steps_ts_horizon)
 
-branches_dlr_v = ["A2", "A5", "A24", "B10","B18", "CA-1", "C22", "C34",
+branches_dlr_v = ["A2", "AB1", "A24", "B10","B18", "CA-1", "C22", "C34",
                     "A7", "A17", "B14", "B15", "C7", "C17"] # Example branch names, replace with actual branch names that you want to include DLR
 add_dlr_to_system_branches!(
     sys,
@@ -93,16 +87,16 @@ set_device_model!(template_uc, HydroDispatch, HydroDispatchRunOfRiver)
 line_device_model = DeviceModel(
     Line,
     StaticBranch;
-    # time_series_names = Dict(
-    #     DynamicBranchRatingTimeSeriesParameter => "dynamic_line_ratings",
-    # )
+    time_series_names = Dict(
+        DynamicBranchRatingTimeSeriesParameter => "dynamic_line_ratings",
+    )
     )
 TapTransf_device_model = DeviceModel(
     TapTransformer,
     StaticBranch;
-    # time_series_names = Dict(
-    #     DynamicBranchRatingTimeSeriesParameter => "dynamic_line_ratings",
-    # )
+    time_series_names = Dict(
+        DynamicBranchRatingTimeSeriesParameter => "dynamic_line_ratings",
+    )
     )
 
 set_device_model!(template_uc, line_device_model)
@@ -165,7 +159,8 @@ therm_df = read_realized_variable(uc, "ActivePowerVariable__ThermalStandard", ta
 Pline_df = read_realized_expression(uc, "PTDFBranchFlow__Line", table_format = TableFormat.WIDE)
 PTrafo_df = read_realized_expression(uc, "PTDFBranchFlow__TapTransformer", table_format = TableFormat.WIDE)
 
-Pline_dlr_df = Pline_df[:, ["A2", "A5", "A24", "B10","B18", "CA-1", "C22", "C34"]]
+Pline_dlr_df = Pline_df[:, ["A2", "AB1", "A24", "B10","B18", "CA-1", "C22", "C34"]]
+line = get_component(Line, sys, "AB1")
 PTrafo_dlr_df = PTrafo_df[:, ["A7", "A17"]]
 
 vars = model.internal.container.variables
